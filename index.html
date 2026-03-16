@@ -30,6 +30,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            scroll-behavior: smooth;
         }
 
         body {
@@ -37,7 +38,7 @@
             background-color: var(--bg-main);
             color: var(--text-body);
             display: grid;
-            grid-template-columns: 280px 1fr 240px; /* 3 Columns layout */
+            grid-template-columns: 280px 1fr 240px;
             min-height: 100vh;
             line-height: 1.6;
         }
@@ -69,7 +70,7 @@
             font-weight: bold;
         }
 
-        .left-sidebar ul { list-style: none; }
+        .left-sidebar ul { list-style: none; margin-bottom: 25px;}
         .left-sidebar ul li a {
             display: block;
             padding: 8px 20px;
@@ -78,7 +79,7 @@
             font-size: 0.9rem;
             border-left: 3px solid transparent;
         }
-        .left-sidebar ul li a:hover, .left-sidebar ul li a.active {
+        .left-sidebar ul li a:hover {
             background-color: var(--bg-surface);
             color: var(--text-title);
             border-left-color: var(--accent-blue);
@@ -88,23 +89,23 @@
         .main-content {
             grid-column: 2;
             padding: 40px 60px;
-            max-width: 1000px;
+            max-width: 1050px;
         }
 
-        .breadcrumbs {
-            font-size: 0.85rem;
-            color: var(--accent-blue);
-            margin-bottom: 20px;
-        }
+        .breadcrumbs { font-size: 0.85rem; color: var(--accent-blue); margin-bottom: 20px; }
         .breadcrumbs span { color: var(--text-muted); }
 
-        h1 { color: var(--text-title); font-size: 2.2rem; margin-bottom: 15px; font-weight: 700; }
-        h2 { color: var(--text-title); font-size: 1.5rem; margin-top: 40px; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;}
-        h3 { color: var(--text-title); font-size: 1.2rem; margin-top: 30px; margin-bottom: 10px; }
+        h1 { color: var(--text-title); font-size: 2.4rem; margin-bottom: 5px; font-weight: 700; }
+        .author { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 30px; display: block; border-bottom: 1px solid var(--border-color); padding-bottom: 20px;}
+        
+        h2 { color: var(--text-title); font-size: 1.6rem; margin-top: 50px; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;}
+        h3 { color: var(--text-title); font-size: 1.2rem; margin-top: 35px; margin-bottom: 10px; }
+        h4 { color: var(--text-title); font-size: 1rem; margin-top: 20px; margin-bottom: 5px; }
         
         p { margin-bottom: 15px; font-size: 0.95rem; }
+        ul, ol { margin-bottom: 15px; margin-left: 25px; font-size: 0.95rem;}
+        li { margin-bottom: 5px; }
 
-        /* Tags / Badges */
         .tag-container { margin-bottom: 20px; display: flex; gap: 10px; }
         .tag {
             background-color: var(--tag-bg);
@@ -117,23 +118,21 @@
         }
         .tag.server { border-color: #d29922; color: #d29922; }
         .tag.client { border-color: #2ea043; color: #2ea043; }
+        .tag.warning { border-color: #f85149; color: #f85149; }
 
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .callout {
+            background-color: var(--bg-surface);
+            border-left: 4px solid var(--accent-blue);
+            padding: 15px 20px;
+            border-radius: 0 6px 6px 0;
             margin: 20px 0;
             font-size: 0.9rem;
         }
-        th, td {
-            padding: 12px;
-            border-bottom: 1px solid var(--border-color);
-            text-align: left;
-        }
-        th { color: var(--text-title); font-weight: 500; }
-        td code { color: var(--text-title); }
 
-        /* Code Blocks */
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--border-color); text-align: left; font-size: 0.9rem;}
+        th { color: var(--text-title); font-weight: 500; background-color: var(--bg-surface);}
+
         pre {
             background-color: var(--bg-code);
             border: 1px solid var(--border-color);
@@ -142,18 +141,16 @@
             overflow-x: auto;
             margin: 15px 0;
         }
-        code {
-            font-family: "Fira Code", Consolas, monospace;
-            font-size: 0.85rem;
-        }
-        p code, td code {
+        code { font-family: "Fira Code", Consolas, monospace; font-size: 0.85rem; }
+        p code, td code, li code {
             background-color: var(--bg-surface);
             padding: 2px 6px;
             border-radius: 4px;
             border: 1px solid var(--border-color);
+            color: var(--text-title);
         }
 
-        /* --- Right Sidebar (On this page) --- */
+        /* --- Right Sidebar --- */
         .right-sidebar {
             background-color: var(--bg-main);
             position: fixed;
@@ -164,141 +161,923 @@
             border-left: 1px solid var(--border-color);
         }
 
-        .right-sidebar-title {
-            color: var(--text-title);
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
+        .right-sidebar-title { color: var(--text-title); font-size: 0.9rem; font-weight: 600; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;}
         .right-sidebar ul { list-style: none; }
         .right-sidebar ul li { margin-bottom: 8px; }
-        .right-sidebar ul li a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: color 0.2s;
-        }
+        .right-sidebar ul li a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
         .right-sidebar ul li a:hover { color: var(--text-title); }
-        .right-sidebar ul li.sub-link { margin-left: 15px; }
+        .right-sidebar ul li.sub-link { margin-left: 15px; border-left: 1px solid var(--border-color); padding-left: 10px;}
 
-        /* Responsive */
         @media (max-width: 1100px) {
             body { grid-template-columns: 240px 1fr; }
             .right-sidebar { display: none; }
-        }
-        @media (max-width: 768px) {
-            body { display: block; }
-            .left-sidebar { position: relative; width: 100%; height: auto; border-bottom: 1px solid var(--border-color); }
-            .main-content { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
     <nav class="left-sidebar">
-        <div class="sidebar-title">Engine API</div>
+        <div class="sidebar-title">Engine Guide</div>
         <ul>
             <li><a href="#overview">Overview</a></li>
-            <li><a href="#setup">Setup Guide</a></li>
+            <li><a href="#setup">Setup & Installation</a></li>
+            <li><a href="#architecture">Architecture</a></li>
         </ul>
-        <br>
-        <div class="sidebar-title">Classes</div>
+        <div class="sidebar-title">API Reference</div>
         <ul>
-            <li><a href="#module-server" class="active">LDS Server</a></li>
-            <li><a href="#module-client">LDS Client</a></li>
+            <li><a href="#server-api">Server API</a></li>
+            <li><a href="#attributes">Part Attributes</a></li>
+            <li><a href="#client-config">Client Configuration</a></li>
+        </ul>
+        <div class="sidebar-title">Resources</div>
+        <ul>
+            <li><a href="#example-script">Example Usage</a></li>
+            <li><a href="#source-code">Source Code</a></li>
         </ul>
     </nav>
 
     <main class="main-content">
-        <div class="breadcrumbs">
-            Modules <span>/</span> Server <span>/</span> LDS
-        </div>
+        <div class="breadcrumbs">Modules <span>/</span> Essentials <span>/</span> LDS</div>
 
-        <h1 id="overview">Lego Destruction System</h1>
+        <h1 id="overview">Lego Destruction System (LDS)</h1>
+        <span class="author">Created by <b>Samtyy</b> (Aka Armahan, Prymitif, Durkheim)</span>
         
         <div class="tag-container">
             <span class="tag">Not Creatable</span>
             <span class="tag">ModuleScript</span>
         </div>
 
-        <p>LDS is a high-performance destruction engine for Roblox. It turns standard parts into voxel-based Lego craters upon impact.</p>
-        <p>The server handles the complex CSG math. The client handles all visual debris, particles, and sounds. This separation ensures zero server lag during explosions.</p>
+        <p>The Lego Destruction System (LDS) is a highly optimized, voxel-based destruction engine designed for Roblox. It dynamically processes CSG (Constructive Solid Geometry) subtractions to create satisfying, blocky craters on any BasePart, while instantly generating physics-simulated debris that inherits the exact textures and materials of the destroyed object.</p>
+
+        <div class="callout">
+            <strong>Performance First:</strong> To guarantee zero server lag, LDS relies on a strict Server-Client architecture. The Server only handles the math and the CSG, while the Client handles all visual particles, sound effects, and physical debris rendering.
+        </div>
 
         <h2 id="setup">Setup & Installation</h2>
-        <p>Follow these steps to install the module in your place:</p>
+        <p>Proper hierarchy is required for the system to function. Follow this structure carefully:</p>
+
         <ol>
-            <li>Create a folder named <code>Breakable</code> inside <code>Workspace</code>. Put destructible parts here.</li>
-            <li>Place the Server Module inside <code>ReplicatedStorage</code>.</li>
-            <li>Place the Client Module inside <code>StarterPlayerScripts</code>.</li>
-            <li>Call <code>.Start()</code> on both modules from a Server Script and a Local Script.</li>
+            <li>Create a <code>Folder</code> named <strong><code>Breakable</code></strong> directly inside the <code>Workspace</code>. All parts you want to be destructible must reside in this folder.</li>
+            <li>Place the <strong>LDS Server Module</strong> inside <code>ReplicatedStorage.Assets.Modules.Server.LDS</code>.</li>
+            <li>Place the <strong>LDS Client LocalScript</strong> inside <code>StarterPlayer.StarterPlayerScripts</code>.</li>
+            <li>Create a standard <strong>Server Script</strong> in <code>ServerScriptService</code> to initialize the engine (see <a href="#example-script">Example Usage</a>).</li>
         </ol>
 
-        <h2 id="properties">Properties (Attributes)</h2>
-        <p>Add these custom attributes to your parts to change how they break.</p>
+        <p>Once <code>.Start()</code> is called, LDS will automatically generate a temporary <code>Remotes</code> folder in ReplicatedStorage if you haven't set up the paths yet.</p>
+
+        <h2 id="architecture">System Architecture</h2>
+        <p>Understanding how LDS splits its workload is crucial for modifying or extending it:</p>
+        <ul>
+            <li><strong>Server Module:</strong> Handles Raycast verification, bounds checking, calculating voxel cutters based on <code>LEGO_PRIORITIES</code>, and executing <code>SubtractAsync</code>.</li>
+            <li><strong>Client Visuals:</strong> The client listens for the <code>RenderImpact</code> remote. It generates Debris parts, applies velocity, plays dynamic pitch sounds based on part volume, and spawns Dust/Sparks.</li>
+            <li><strong>Debris Suction:</strong> The client includes a <code>RunService.Heartbeat</code> loop that detects when the player walks near debris. Debris within the <code>SUCTION_RADIUS</code> will tween towards the player and be destroyed.</li>
+        </ul>
+
+        <h2 id="server-api">Server API</h2>
+        <p>Interact with LDS using the Server Module.</p>
+
+        <h3 id="start">DestructionServer.Start()</h3>
+        <div class="tag-container"><span class="tag server">Server</span></div>
+        <p>Initializes the Destruction Engine. Validates the existence of the <code>Breakable</code> folder and establishes <code>OnServerEvent</code> connections for client impact requests.</p>
+        <pre><code class="language-lua">local DestructionModule = require(ReplicatedStorage.Assets.Modules.Server.LDS)
+DestructionModule.Start()</code></pre>
+
+        <h3 id="process-impact">DestructionServer.ProcessImpact(hitPoint, customParams, player)</h3>
+        <div class="tag-container"><span class="tag server">Server</span></div>
+        <p>Programmatically triggers an explosion at a specific world position. This is the core function you will call from your weapons or spells.</p>
+        
+        <h4>Parameters</h4>
         <table>
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>hitPoint</code></td>
+                    <td>Vector3</td>
+                    <td>The exact world position where the explosion occurs.</td>
+                </tr>
+                <tr>
+                    <td><code>customParams</code></td>
+                    <td>table (optional)</td>
+                    <td>A dictionary containing <code>ImpactRadius</code>, <code>HoleVoidRadius</code>, and <code>ImpactForce</code>. If nil, defaults are used.</td>
+                </tr>
+                <tr>
+                    <td><code>player</code></td>
+                    <td>Player (optional)</td>
+                    <td>The player who caused the impact. Passed to clients so the local player doesn't trigger redundant visuals.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 id="attributes">Part Attributes</h2>
+        <p>You can fine-tune how specific walls or objects react to explosions by assigning these attributes directly to the BaseParts inside the <code>Breakable</code> folder.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute Name</th>
                     <th>Value Type</th>
-                    <th>Summary</th>
+                    <th>Behavior</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><code>Unbreakable</code></td>
                     <td>boolean</td>
-                    <td>If true, the part ignores all impacts. Use this for map boundaries.</td>
+                    <td>If true, the part becomes immune to all LDS explosions. Ideal for map boundaries or core structural pillars.</td>
                 </tr>
                 <tr>
                     <td><code>Undividable</code></td>
                     <td>boolean</td>
-                    <td>If true, the part shatters entirely into debris instantly instead of getting a crater.</td>
+                    <td>If true, the part will not be carved by CSG. Instead, taking any impact will cause it to instantly shatter into raw debris entirely.</td>
                 </tr>
             </tbody>
         </table>
 
-        <h2 id="methods">Methods</h2>
+        <h2 id="client-config">Client Configuration</h2>
+        <p>The visual behavior of the debris can be configured at the top of the <strong>Client Script</strong>. Tweak these constants to fit your game's aesthetic:</p>
+        <ul>
+            <li><code>IMPACT_RADIUS</code> / <code>IMPACT_FORCE</code>: Default values if the server doesn't provide custom params.</li>
+            <li><code>DEBRIS_LIFETIME</code>: How many seconds debris stays on the ground before tweening to size 0 and destroying itself.</li>
+            <li><code>SUCTION_RADIUS</code>: The distance in studs at which the player automatically vacuums up debris.</li>
+            <li><code>USE_DUST</code> / <code>USE_SPARKS</code>: Booleans to enable or disable the visual particle effects upon impact.</li>
+            <li><code>FREEZE_FRAME_DURATION</code>: Temporarily sets workspace gravity to 0 for a fraction of a second to emphasize the explosion impact.</li>
+            <li><code>VELOCITY_THRESHOLD</code>: Minimum velocity a debris part must reach to trigger collision sounds.</li>
+        </ul>
 
-        <h3 id="start">Start</h3>
-        <div class="tag-container">
-            <span class="tag server">Server</span>
-            <span class="tag client">Client</span>
-        </div>
-        <p>Initializes the system. Creates required Folders and RemoteEvents automatically.</p>
-        <pre><code class="language-lua">local LDS = require(game.ReplicatedStorage.LDS)
-LDS.Start()</code></pre>
+        <h2 id="example-script">Example Usage</h2>
+        <p>Here is an example of a Server Script (placed in <code>ServerScriptService</code>) that initializes LDS and listens for a weapon firing.</p>
+        <pre><code class="language-lua">--// Variables & Services
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local DestructionModule = require(ReplicatedStorage.Assets.Modules.Server.LDS)
 
-        <h3 id="process-impact">ProcessImpact</h3>
-        <div class="tag-container">
-            <span class="tag server">Server</span>
-        </div>
-        <p>Triggers an explosion at a specific location. Use this for bombs, spells, or custom weapons.</p>
-        <pre><code class="language-lua">local LDS = require(game.ReplicatedStorage.LDS)
+--// 1. Initialize the Engine
+DestructionModule.Start()
 
--- Define explosion settings
-local params = {
-    ImpactRadius = 10,
-    HoleVoidRadius = 4,
-    ImpactForce = 100
-}
+local Remote = ReplicatedStorage.Assets.Signals.Remotes.LDS_Destruction
 
--- Fire the explosion
-LDS.ProcessImpact(Vector3.new(0, 10, 0), params)</code></pre>
+--// 2. Listen for Weapon Impacts
+Remote.OnServerEvent:Connect(function(player, hitPoint, attackType)
+
+    if attackType == "Sniper" then
+        -- Small, precise crater
+        DestructionModule.ProcessImpact(hitPoint, {
+            ImpactRadius = 3,
+            HoleVoidRadius = 2,
+            ImpactForce = 100
+        }, player)
+
+    elseif attackType == "Rocket" then
+        -- Massive destruction
+        DestructionModule.ProcessImpact(hitPoint, {
+            ImpactRadius = 12,
+            HoleVoidRadius = 6,
+            ImpactForce = 80
+        }, player)
+    end
+end)</code></pre>
 
         <h2 id="source-code">Source Code</h2>
         
-        <h3 id="code-server">Server Module</h3>
-        <pre><code class="language-lua">-- Paste your Server Module code here
+        <h3 id="code-server">Server Module (LDS)</h3>
+        <p>Place in <code>ReplicatedStorage.Assets.Modules.Server.LDS</code></p>
+        <pre><code class="language-lua">--// Section: Initialization
 local DestructionServer = {}
--- ...
+
+DestructionServer.Settings = {
+	Autorun = false,
+	AutorunFunction = nil
+}
+
+--// Section: Services
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+
+--// Section: Variables
+local DEFAULT_CONFIG = {
+	ImpactRadius = 7,
+	HoleVoidRadius = 3,
+	ImpactForce = 65
+}
+
+local MAX_IMPACT_RADIUS = 12
+local MAX_CSG_CUTTERS = 2000
+
+local LEGO_PRIORITIES = {
+	{Vector3.new(4, 1, 2), Vector3.new(2, 1, 4), Vector3.new(4, 2, 1), Vector3.new(1, 2, 4)},
+	{Vector3.new(2, 1, 2), Vector3.new(2, 2, 1), Vector3.new(1, 2, 2)},
+	{Vector3.new(2, 1, 1), Vector3.new(1, 1, 2), Vector3.new(1, 2, 1)},
+	{Vector3.new(1, 1, 1)},
+	{Vector3.new(1, 0.4, 1), Vector3.new(1, 1, 0.4), Vector3.new(0.4, 1, 1)}
+}
+
+_G.ActiveDebrisTable = {}
+
+local RemoteEvent
+local BreakableFolder
+local isRunning = false
+
+--// Section: Utility Functions
+local function copyVisuals(originalPart, newPart)
+	for _, child in ipairs(originalPart:GetChildren()) do
+		if child:IsA("Texture") or child:IsA("Decal") or child:IsA("SurfaceAppearance") then
+			child:Clone().Parent = newPart
+		end
+	end
+end
+
+local function generateDebrisData(originalPart, spawnCFrame, hitPoint, dist, size, debrisList, force)
+	local id = "Debris_" .. HttpService:GenerateGUID(false)
+	local dir = (spawnCFrame.Position - hitPoint).Unit
+
+	if dir.Magnitude ~= dir.Magnitude then dir = Vector3.new(0, 1, 0) end
+
+	local forceMultiplier = force / 35
+	local spread = Vector3.new(math.random(-15, 15) / 10, math.random(5, 20) / 10, math.random(-15, 15) / 10) * forceMultiplier
+	local finalVel = (dir + spread).Unit * (force * (0.8 + math.random() * 0.5))
+	local angVel = Vector3.new(math.random(-50, 50), math.random(-50, 50), math.random(-50, 50)) * forceMultiplier
+
+	local textures = {}
+	for _, child in ipairs(originalPart:GetChildren()) do
+		if child:IsA("Texture") or child:IsA("Decal") then
+			table.insert(textures, {
+				Class = child.ClassName,
+				Texture = child.Texture,
+				Face = child.Face,
+				Color3 = child.Color3,
+				Transparency = child.Transparency,
+				StudsPerTileU = child:IsA("Texture") and child.StudsPerTileU or nil,
+				StudsPerTileV = child:IsA("Texture") and child.StudsPerTileV or nil
+			})
+		end
+	end
+
+	local data = {
+		ID = id,
+		Size = size,
+		CFrame = spawnCFrame,
+		Color = originalPart.Color,
+		Material = originalPart.Material,
+		TopS = originalPart.TopSurface,
+		BotS = originalPart.BottomSurface,
+		LeftS = originalPart.LeftSurface,
+		RightS = originalPart.RightSurface,
+		FrontS = originalPart.FrontSurface,
+		BackS = originalPart.BackSurface,
+		Velocity = finalVel,
+		AngularVelocity = angVel,
+		Visuals = textures
+	}
+
+	_G.ActiveDebrisTable[id] = data
+	table.insert(debrisList, data)
+
+	task.delay(15, function()
+		if _G.ActiveDebrisTable[id] then
+			_G.ActiveDebrisTable[id] = nil
+		end
+	end)
+end
+
+local function getRandomLegoSize()
+	local priorityGroup = LEGO_PRIORITIES[math.random(1, 4)]
+	return priorityGroup[math.random(1, #priorityGroup)]
+end
+
+local function checkFloating(part)
+	task.spawn(function()
+		task.wait(0.1)
+		if not part or not part.Parent or not part.Anchored then return end
+
+		local overlapParams = OverlapParams.new()
+		overlapParams.FilterType = Enum.RaycastFilterType.Exclude
+		overlapParams.FilterDescendantsInstances = {part}
+
+		local touching = Workspace:GetPartsInPart(part, overlapParams)
+		local isSupported = false
+
+		for _, tPart in ipairs(touching) do
+			if tPart:IsA("Terrain") or (tPart.Anchored and tPart.Name ~= "Debris") then
+				isSupported = true
+				break
+			end
+		end
+
+		if not isSupported then
+			part.Anchored = false
+		end
+	end)
+end
+
+--// Section: Core Logic
+local function calculateVoxelCutters(part, hitPoint, debrisList, params)
+	local radius = math.clamp(params.ImpactRadius or DEFAULT_CONFIG.ImpactRadius, 1, MAX_IMPACT_RADIUS)
+	local force = params.ImpactForce or DEFAULT_CONFIG.ImpactForce
+
+	if part:GetAttribute("Undividable") or part.Size.Magnitude < (radius * 1.5) then
+		local numDebris = math.random(8, 15)
+		for _ = 1, numDebris do
+			local offset = Vector3.new(math.random(-2, 2), math.random(-2, 2), math.random(-2, 2))
+			generateDebrisData(part, part.CFrame * CFrame.new(offset), hitPoint, 0, getRandomLegoSize(), debrisList, force)
+		end
+		part:Destroy()
+		return nil
+	end
+
+	local impactDir = (part.Position - hitPoint).Unit
+	if impactDir.Magnitude ~= impactDir.Magnitude then impactDir = Vector3.new(0, 1, 0) end
+
+	local cutters = {}
+	local localHit = part.CFrame:PointToObjectSpace(hitPoint)
+	local localImpactDir = part.CFrame:VectorToObjectSpace(impactDir)
+	local craterCenter = localHit + (localImpactDir * (radius * 0.3))
+
+	craterCenter = Vector3.new(
+		math.floor(craterCenter.X / 2 + 0.5) * 2,
+		math.floor(craterCenter.Y / 2 + 0.5) * 2,
+		math.floor(craterCenter.Z / 2 + 0.5) * 2
+	)
+
+	local step = 2
+	local R = math.ceil(radius)
+	if R % 2 ~= 0 then R = R + 1 end
+
+	local usedPositions = {}
+
+	for x = -R, R, step do
+		for y = -R, R, step do
+			for z = -R, R, step do
+				local dist = Vector3.new(x, y, z).Magnitude
+				local noise = math.random(-15, 15) / 10
+				local effectiveDist = dist + noise
+
+				if effectiveDist <= radius * 0.9 then
+					local snapX = craterCenter.X + x
+					local snapY = craterCenter.Y + y
+					local snapZ = craterCenter.Z + z
+
+					local size
+					if effectiveDist < radius * 0.4 then
+						size = Vector3.new(4, 4, 4)
+					else
+						local choices = {Vector3.new(4, 2, 2), Vector3.new(2, 2, 4), Vector3.new(2, 4, 2), Vector3.new(2, 2, 2)}
+						size = choices[math.random(1, #choices)]
+					end
+
+					local posKey = snapX .. "_" .. snapY .. "_" .. snapZ
+
+					if not usedPositions[posKey] then
+						usedPositions[posKey] = true
+
+						local cutter = Instance.new("Part")
+						cutter.Shape = Enum.PartType.Block
+						cutter.Size = size
+						cutter.CFrame = part.CFrame * CFrame.new(snapX, snapY, snapZ)
+						cutter.Anchored = true
+						cutter.CanCollide = false
+						cutter.Transparency = 1
+
+						table.insert(cutters, cutter)
+
+						if math.random() < 0.45 then
+							generateDebrisData(part, cutter.CFrame, hitPoint, (cutter.Position - hitPoint).Magnitude, getRandomLegoSize(), debrisList, force)
+						end
+					end
+				end
+			end
+			if #cutters >= MAX_CSG_CUTTERS then break end
+		end
+		if #cutters >= MAX_CSG_CUTTERS then break end
+	end
+
+	return cutters
+end
+
+local function executeCSG(part, cutters, hitPoint)
+	local isAutoUnanchor = part.Anchored and part:GetAttribute("AutoUnanchor")
+	local partCFrame = part.CFrame
+	local localHit = partCFrame:PointToObjectSpace(hitPoint)
+
+	if isAutoUnanchor then
+		local size = part.Size
+		local longestAxis = "Y"
+
+		if size.X >= size.Y and size.X >= size.Z then longestAxis = "X" end
+		if size.Z >= size.X and size.Z >= size.Y then longestAxis = "Z" end
+
+		local topCutter = Instance.new("Part")
+		topCutter.Size = Vector3.new(2000, 2000, 2000)
+
+		local bottomCutter = Instance.new("Part")
+		bottomCutter.Size = Vector3.new(2000, 2000, 2000)
+
+		if longestAxis == "Y" then
+			topCutter.CFrame = partCFrame * CFrame.new(0, localHit.Y + 1000, 0)
+			bottomCutter.CFrame = partCFrame * CFrame.new(0, localHit.Y - 1000, 0)
+		elseif longestAxis == "X" then
+			topCutter.CFrame = partCFrame * CFrame.new(localHit.X + 1000, 0, 0)
+			bottomCutter.CFrame = partCFrame * CFrame.new(localHit.X - 1000, 0, 0)
+		else
+			topCutter.CFrame = partCFrame * CFrame.new(0, 0, localHit.Z + 1000)
+			bottomCutter.CFrame = partCFrame * CFrame.new(0, 0, localHit.Z - 1000)
+		end
+
+		topCutter.Anchored = true
+		bottomCutter.Anchored = true
+
+		local bottomPieceCutters = {topCutter}
+		for _, c in ipairs(cutters) do table.insert(bottomPieceCutters, c) end
+
+		local topPieceCutters = {bottomCutter}
+		for _, c in ipairs(cutters) do table.insert(topPieceCutters, c) end
+
+		local bottomSuccess, bottomResult = pcall(function()
+			return part:SubtractAsync(bottomPieceCutters, Enum.CollisionFidelity.PreciseConvexDecomposition, Enum.RenderFidelity.Automatic)
+		end)
+
+		local topSuccess, topResult = pcall(function()
+			return part:SubtractAsync(topPieceCutters, Enum.CollisionFidelity.PreciseConvexDecomposition, Enum.RenderFidelity.Automatic)
+		end)
+
+		topCutter:Destroy()
+		bottomCutter:Destroy()
+		for _, c in ipairs(cutters) do c:Destroy() end
+
+		local sliced = false
+
+		if bottomSuccess and bottomResult then
+			bottomResult.UsePartColor = true
+			bottomResult.Parent = BreakableFolder
+			copyVisuals(part, bottomResult)
+			bottomResult:SetAttribute("AutoUnanchor", true)
+			checkFloating(bottomResult)
+			sliced = true
+		end
+
+		if topSuccess and topResult then
+			topResult.UsePartColor = true
+			topResult.Parent = BreakableFolder
+			copyVisuals(part, topResult)
+			topResult:SetAttribute("AutoUnanchor", true)
+			checkFloating(topResult)
+			sliced = true
+		end
+
+		if sliced then
+			part:Destroy()
+			return
+		end
+	end
+
+	local success, result = pcall(function()
+		return part:SubtractAsync(cutters, Enum.CollisionFidelity.PreciseConvexDecomposition, Enum.RenderFidelity.Automatic)
+	end)
+
+	for _, c in ipairs(cutters) do
+		c:Destroy()
+	end
+
+	if success and result then
+		result.UsePartColor = true
+		result.Parent = BreakableFolder
+		copyVisuals(part, result)
+
+		if isAutoUnanchor then
+			result:SetAttribute("AutoUnanchor", true)
+			checkFloating(result)
+		end
+
+		part:Destroy()
+	end
+end
+
+--// Section: API
+function DestructionServer.ProcessImpact(hitPoint, customParams, player)
+	local params = customParams or DEFAULT_CONFIG
+	local overlapParams = OverlapParams.new()
+	overlapParams.FilterType = Enum.RaycastFilterType.Include
+	overlapParams.FilterDescendantsInstances = {BreakableFolder}
+
+	local searchRadius = math.clamp(params.ImpactRadius or DEFAULT_CONFIG.ImpactRadius, 1, MAX_IMPACT_RADIUS)
+	local rawParts = Workspace:GetPartBoundsInRadius(hitPoint, searchRadius, overlapParams)
+
+	local validParts = {}
+	for _, part in ipairs(rawParts) do
+		if part:IsA("BasePart") and not part:GetAttribute("Unbreakable") then
+			table.insert(validParts, part)
+		end
+	end
+
+	if #validParts == 0 then return end
+
+	local impactDebrisList = {}
+	local pendingCSG = {}
+
+	for _, part in ipairs(validParts) do
+		local cutters = calculateVoxelCutters(part, hitPoint, impactDebrisList, params)
+		if cutters and #cutters > 0 then
+			table.insert(pendingCSG, {Part = part, Cutters = cutters, HitPoint = hitPoint})
+		end
+	end
+
+	if RemoteEvent then
+		RemoteEvent:FireAllClients("RenderImpact", hitPoint, impactDebrisList, player, params)
+	end
+
+	for _, taskData in ipairs(pendingCSG) do
+		task.spawn(function()
+			executeCSG(taskData.Part, taskData.Cutters, taskData.HitPoint)
+		end)
+	end
+end
+
+--// Section: Networking
+local function setupNetworking()
+	RemoteEvent.OnServerEvent:Connect(function(player, action, ...)
+		local args = {...}
+
+		if action == "RequestImpact" then
+			local hitPoint = args[1]
+			local customParams = args[2] or DEFAULT_CONFIG
+
+			DestructionServer.ProcessImpact(hitPoint, customParams, player)
+
+		elseif action == "CollectDebris" then
+			local debrisID = args[1]
+
+			if _G.ActiveDebrisTable[debrisID] then
+				_G.ActiveDebrisTable[debrisID] = nil
+				RemoteEvent:FireAllClients("RemoveDebris", debrisID)
+			end
+		end
+	end)
+
+	Players.PlayerAdded:Connect(function(player)
+		local existingDebris = {}
+		for _, data in pairs(_G.ActiveDebrisTable) do
+			table.insert(existingDebris, data)
+		end
+
+		if #existingDebris > 0 then
+			RemoteEvent:FireClient(player, "SyncExistingDebris", existingDebris)
+		end
+	end)
+end
+
+--// Section: Initialization
+function DestructionServer.Start()
+	if isRunning then return end
+	isRunning = true
+
+	local signalsFolder = ReplicatedStorage:FindFirstChild("Assets") and ReplicatedStorage.Assets:FindFirstChild("Signals") and ReplicatedStorage.Assets.Signals:FindFirstChild("Remotes")
+
+	if not signalsFolder then
+		signalsFolder = Instance.new("Folder")
+		signalsFolder.Name = "LDS_TempRemotes"
+		signalsFolder.Parent = ReplicatedStorage
+	end
+
+	RemoteEvent = signalsFolder:FindFirstChild("LDS_Destruction")
+	if not RemoteEvent then
+		RemoteEvent = Instance.new("RemoteEvent")
+		RemoteEvent.Name = "LDS_Destruction"
+		RemoteEvent.Parent = signalsFolder
+	end
+
+	BreakableFolder = Workspace:FindFirstChild("Breakable")
+	if not BreakableFolder then
+		BreakableFolder = Instance.new("Folder")
+		BreakableFolder.Name = "Breakable"
+		BreakableFolder.Parent = Workspace
+	end
+
+	setupNetworking()
+end
+
+function DestructionServer.Stop()
+	isRunning = false
+end
+
 return DestructionServer</code></pre>
 
         <h3 id="code-client">Client Module</h3>
-        <pre><code class="language-lua">-- Paste your Client Module code here
-local DestructionClient = {}
--- ...
-return DestructionClient</code></pre>
+        <p>Place in <code>StarterPlayer.StarterPlayerScripts</code></p>
+        <pre><code class="language-lua">--// Services
+local UserInputService = game:GetService("UserInputService")
+local Debris = game:GetService("Debris")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+
+--// Variables
+local LocalPlayer = Players.LocalPlayer
+local Camera = Workspace.CurrentCamera
+
+local CameraShake = require(ReplicatedStorage.Assets.Modules.Essentials.CameraShakeUpdated)
+local CameraShakePresets = require(ReplicatedStorage.Assets.Modules.Essentials.CameraShakeUpdated:WaitForChild("Presets"))
+
+local Remote = game.ReplicatedStorage.Assets.Signals.Remotes.LDS_Destruction
+local BreakableFolder = Workspace:WaitForChild("Breakable")
+
+local ClientDebrisFolder = Instance.new("Folder")
+ClientDebrisFolder.Name = "ClientDebris"
+ClientDebrisFolder.Parent = Workspace
+
+--// Configurations
+local IMPACT_RADIUS = 7
+local IMPACT_FORCE = 65
+local DEBRIS_LIFETIME = 15
+local SUCTION_RADIUS = 10 
+
+local USE_DUST = true 
+local USE_SPARKS = true
+local FREEZE_FRAME_DURATION = 0.08 
+local FREEZE_GRAVITY = 0 
+
+local DEBRIS_SOUND_ID = "rbxassetid://114470768765253"
+local VELOCITY_THRESHOLD = 5
+local SOUND_COOLDOWN = 0.15
+
+local debrisBeingSucked = {}
+
+--// Audio System
+local function bindCollisionSound(debrisPart)
+	local lastSoundTime = 0
+
+	local sound = Instance.new("Sound")
+	sound.SoundId = DEBRIS_SOUND_ID
+	sound.Volume = 0.4
+	sound.RollOffMaxDistance = 40
+	sound.RollOffMinDistance = 5
+	sound.RollOffMode = Enum.RollOffMode.Linear
+	sound.Parent = debrisPart
+
+	local volumeFactor = debrisPart.Size.X * debrisPart.Size.Y * debrisPart.Size.Z
+	if volumeFactor < 2 then
+		sound.PlaybackSpeed = math.random(120, 140) / 100 
+	elseif volumeFactor < 6 then
+		sound.PlaybackSpeed = math.random(90, 110) / 100  
+	else
+		sound.PlaybackSpeed = math.random(70, 85) / 100   
+	end
+
+	debrisPart.Touched:Connect(function()
+		local id = debrisPart:GetAttribute("DebrisID")
+		if id and debrisBeingSucked[id] then return end 
+
+		local currentVel = debrisPart.AssemblyLinearVelocity.Magnitude
+
+		if currentVel > VELOCITY_THRESHOLD then
+			local currentTime = tick()
+			if currentTime - lastSoundTime >= SOUND_COOLDOWN then
+				lastSoundTime = currentTime
+				sound.Volume = math.clamp(currentVel / 60, 0.1, 0.5) 
+				sound.PlaybackSpeed = sound.PlaybackSpeed * (math.random(95, 105) / 100)
+				sound:Play()
+			end
+		end
+	end)
+end
+
+--// Visual Effects
+local function spawnSparks(hitPoint)
+	if not USE_SPARKS then return end
+	local numSparks = math.random(math.floor(IMPACT_RADIUS * 1.5), math.floor(IMPACT_RADIUS * 3))
+	for i = 1, numSparks do
+		local spark = Instance.new("Part")
+		spark.Size = Vector3.new(0.1, 0.1, math.random(4, 12)/10) 
+		spark.Position = hitPoint + (Vector3.new(math.random(-10,10), math.random(-10,10), math.random(-10,10)).Unit * math.random())
+		spark.Material = Enum.Material.Neon
+		spark.Color = Color3.fromRGB(255, 200, 50) 
+		spark.CanCollide = false
+		spark.Anchored = false
+		spark.Parent = Workspace
+		spark.AssemblyLinearVelocity = Vector3.new(math.random(-10,10), math.random(-5,15), math.random(-10,10)).Unit * (IMPACT_FORCE * math.random(1.5, 3.0))
+		spark.CFrame = CFrame.lookAt(spark.Position, spark.Position + spark.AssemblyLinearVelocity)
+		Debris:AddItem(spark, math.random(5, 12) / 10) 
+	end
+end
+
+local function spawnDust(hitPoint)
+	if not USE_DUST then return end
+	local numDust = math.random(math.floor(IMPACT_RADIUS * 3), math.floor(IMPACT_RADIUS * 5))
+	for i = 1, numDust do
+		local dust = Instance.new("Part")
+		dust.Shape = Enum.PartType.Ball
+		local baseSize = math.random(1, 3) / 10 
+		dust.Size = Vector3.new(baseSize, baseSize, baseSize)
+		local spawnSpread = Vector3.new(math.random(-10,10), math.random(-10,10), math.random(-10,10)).Unit * (math.random() * IMPACT_RADIUS * 0.9)
+		dust.Position = hitPoint + spawnSpread
+		dust.Material = Enum.Material.Sand
+		dust.Color = Color3.fromRGB(200, 200, 200)
+		dust.Transparency = 0.2 
+		dust.CanCollide = false
+		dust.Anchored = true 
+		dust.Parent = Workspace
+
+		local driftDirection = (spawnSpread.Unit + Vector3.new(math.random(-5,5)/10, math.random(5,15)/10, math.random(-5,5)/10)).Unit
+		local driftSpeed = math.random(2, 6) / 100 
+
+		task.spawn(function()
+			local fadeTime = math.random(40, 70) / 10 
+			local steps = 60 
+			local waitTime = fadeTime / steps
+			for s = 1, steps do
+				task.wait(waitTime)
+				if dust and dust.Parent then
+					dust.Transparency = dust.Transparency + ((1 - 0.2) / steps)
+					dust.CFrame = dust.CFrame + (driftDirection * driftSpeed)
+					driftSpeed = driftSpeed * 0.96
+				else break end
+			end
+			if dust and dust.Parent then dust:Destroy() end
+		end)
+	end
+end
+
+local function triggerVisuals(hitPoint)
+	local originalGravity = Workspace.Gravity
+	Workspace.Gravity = FREEZE_GRAVITY
+	task.delay(FREEZE_FRAME_DURATION, function() Workspace.Gravity = originalGravity end)
+
+	local sound = Instance.new("Sound")
+	sound.SoundId = "rbxassetid://100674613725056" 
+	sound.Volume = 1
+	sound.RollOffMaxDistance = 100
+	local attachment = Instance.new("Attachment", Workspace.Terrain)
+	attachment.WorldPosition = hitPoint
+	sound.Parent = attachment
+	sound:Play()
+	Debris:AddItem(attachment, 4) 
+
+	task.spawn(function()
+		if CameraShakePresets and CameraShakePresets["Impact"] then CameraShakePresets["Impact"]() end
+	end)
+
+	spawnDust(hitPoint)
+	spawnSparks(hitPoint)
+end
+
+--// Debris Generation
+local function createOfficialDebris(debrisList)
+	for _, data in ipairs(debrisList) do
+		if ClientDebrisFolder:FindFirstChild(data.ID) then continue end
+
+		local d = Instance.new("Part")
+		d.Name = data.ID 
+		d.Size = data.Size
+		d.CFrame = data.CFrame
+		d.Color = data.Color
+		d.Material = data.Material
+		d.TopSurface, d.BottomSurface = data.TopS, data.BotS
+		d.LeftSurface, d.RightSurface = data.LeftS, data.RightS
+		d.FrontSurface, d.BackSurface = data.FrontS, data.BackS
+		d.Anchored = false
+		d.CanCollide = true
+		d.Parent = ClientDebrisFolder
+		
+		if data.Visuals then
+			for _, vis in ipairs(data.Visuals) do
+				local visualObj = Instance.new(vis.Class)
+				visualObj.Texture = vis.Texture
+				visualObj.Face = vis.Face
+				visualObj.Color3 = vis.Color3
+				visualObj.Transparency = vis.Transparency
+				if vis.Class == "Texture" then
+					visualObj.StudsPerTileU = vis.StudsPerTileU
+					visualObj.StudsPerTileV = vis.StudsPerTileV
+				end
+				visualObj.Parent = d
+			end
+		end
+
+		d:SetAttribute("DebrisID", data.ID)
+
+		d.AssemblyLinearVelocity = data.Velocity
+		d.AssemblyAngularVelocity = data.AngularVelocity
+
+		bindCollisionSound(d)
+
+		task.spawn(function()
+			task.wait(DEBRIS_LIFETIME - 1)
+
+			if d and d.Parent then
+				d.CanCollide = false
+				local shrinkTweenInfo = TweenInfo.new(1, Enum.EasingStyle.Linear)
+				local shrinkTween = TweenService:Create(d, shrinkTweenInfo, {
+					Size = Vector3.new(0, 0, 0)
+				})
+
+				shrinkTween:Play()
+				shrinkTween.Completed:Connect(function()
+					if d and d.Parent then
+						d:Destroy()
+					end
+				end)
+			end
+		end)
+	end
+end
+
+--// Suction System
+RunService.Heartbeat:Connect(function()
+	local char = LocalPlayer.Character
+	if not char or not char:FindFirstChild("HumanoidRootPart") then return end
+
+	local rootPos = char.HumanoidRootPart.Position
+
+	for _, debris in ipairs(ClientDebrisFolder:GetChildren()) do
+		local id = debris:GetAttribute("DebrisID")
+
+		if id and not debrisBeingSucked[id] then
+			local dist = (debris.Position - rootPos).Magnitude
+
+			if dist <= SUCTION_RADIUS then
+				debrisBeingSucked[id] = true
+
+				debris.CanCollide = false
+				debris.Anchored = true
+
+				local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
+				local goalCFrame = CFrame.new(rootPos) * CFrame.Angles(debris.CFrame:ToEulerAnglesXYZ())
+
+				local tween = TweenService:Create(debris, tweenInfo, {
+					CFrame = goalCFrame,
+					Size = Vector3.new(0, 0, 0) 
+				})
+
+				tween:Play()
+				tween.Completed:Connect(function()
+					if debris and debris.Parent then
+						Remote:FireServer("CollectDebris", id)
+						debris:Destroy()
+					end
+				end)
+			end
+		end
+	end
+end)
+
+--// Player Inputs
+UserInputService.InputBegan:Connect(function(input, processed)
+	if processed or input.UserInputType ~= Enum.UserInputType.MouseButton1 then return end
+	local mousePos = UserInputService:GetMouseLocation()
+	local rayParams = RaycastParams.new() 
+	rayParams.FilterType = Enum.RaycastFilterType.Include
+	rayParams.FilterDescendantsInstances = {BreakableFolder}
+	local result = Workspace:Raycast(Camera:ViewportPointToRay(mousePos.X, mousePos.Y).Origin, Camera:ViewportPointToRay(mousePos.X, mousePos.Y).Direction * 1000, rayParams)
+
+	if result then 
+		local hitPoint = result.Position
+		local hitPart = result.Instance
+
+		if hitPart:GetAttribute("Unbreakable") then return end
+
+		local customParams = {
+			ImpactRadius = IMPACT_RADIUS,
+			HoleVoidRadius = IMPACT_RADIUS * 0.4,
+			ImpactForce = IMPACT_FORCE
+		}
+
+		Remote:FireServer("RequestImpact", hitPoint, customParams)
+		triggerVisuals(hitPoint)
+	end
+end)
+
+--// Server Synchronization
+Remote.OnClientEvent:Connect(function(action, ...)
+	local args = {...}
+
+	if action == "RenderImpact" then
+		local hitPoint = args[1]
+		local debrisList = args[2]
+		local sender = args[3]
+
+		if sender ~= game.Players.LocalPlayer then
+			triggerVisuals(hitPoint)
+		end
+		createOfficialDebris(debrisList)
+
+	elseif action == "SyncExistingDebris" then
+		local existingDebrisList = args[1]
+		createOfficialDebris(existingDebrisList)
+
+	elseif action == "RemoveDebris" then
+		local idToRemove = args[1]
+		local debrisObj = ClientDebrisFolder:FindFirstChild(idToRemove)
+		if debrisObj then
+			debrisObj:Destroy()
+		end
+	end
+end)</code></pre>
 
     </main>
 
@@ -306,12 +1085,17 @@ return DestructionClient</code></pre>
         <div class="right-sidebar-title">On this page</div>
         <ul>
             <li><a href="#overview">Overview</a></li>
-            <li><a href="#setup">Setup</a></li>
-            <li><a href="#properties">Properties</a></li>
-            <li><a href="#methods">Methods</a></li>
+            <li><a href="#setup">Setup & Installation</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#server-api">Server API</a></li>
             <li class="sub-link"><a href="#start">Start</a></li>
             <li class="sub-link"><a href="#process-impact">ProcessImpact</a></li>
+            <li><a href="#attributes">Part Attributes</a></li>
+            <li><a href="#client-config">Client Configuration</a></li>
+            <li><a href="#example-script">Example Usage</a></li>
             <li><a href="#source-code">Source Code</a></li>
+            <li class="sub-link"><a href="#code-server">Server Module</a></li>
+            <li class="sub-link"><a href="#code-client">Client Module</a></li>
         </ul>
     </aside>
 
