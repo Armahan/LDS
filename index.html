@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LDS | Lego Destruction System</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    
+    <style>
+        :root {
+            /* Roblox Creator Hub Dark Theme Colors */
+            --bg-main: #0b0f19;
+            --bg-sidebar: #111522;
+            --bg-surface: #1e232d;
+            --bg-code: #0d1117;
+            
+            --text-title: #ffffff;
+            --text-body: #bdc1c6;
+            --text-muted: #8b929a;
+            
+            --accent-blue: #00a2ff;
+            --border-color: #2a2f3a;
+            
+            --tag-bg: #2a2f3a;
+            --tag-text: #e8eaed;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Gotham", "Segoe UI", -apple-system, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-body);
+            display: grid;
+            grid-template-columns: 280px 1fr 240px; /* 3 Columns layout */
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* --- Scrollbar --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* --- Left Sidebar (Global Nav) --- */
+        .left-sidebar {
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+            position: fixed;
+            width: 280px;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            padding: 0 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .left-sidebar ul { list-style: none; }
+        .left-sidebar ul li a {
+            display: block;
+            padding: 8px 20px;
+            color: var(--text-body);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-left: 3px solid transparent;
+        }
+        .left-sidebar ul li a:hover, .left-sidebar ul li a.active {
+            background-color: var(--bg-surface);
+            color: var(--text-title);
+            border-left-color: var(--accent-blue);
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            grid-column: 2;
+            padding: 40px 60px;
+            max-width: 1000px;
+        }
+
+        .breadcrumbs {
+            font-size: 0.85rem;
+            color: var(--accent-blue);
+            margin-bottom: 20px;
+        }
+        .breadcrumbs span { color: var(--text-muted); }
+
+        h1 { color: var(--text-title); font-size: 2.2rem; margin-bottom: 15px; font-weight: 700; }
+        h2 { color: var(--text-title); font-size: 1.5rem; margin-top: 40px; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;}
+        h3 { color: var(--text-title); font-size: 1.2rem; margin-top: 30px; margin-bottom: 10px; }
+        
+        p { margin-bottom: 15px; font-size: 0.95rem; }
+
+        /* Tags / Badges */
+        .tag-container { margin-bottom: 20px; display: flex; gap: 10px; }
+        .tag {
+            background-color: var(--tag-bg);
+            color: var(--tag-text);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            border: 1px solid var(--border-color);
+        }
+        .tag.server { border-color: #d29922; color: #d29922; }
+        .tag.client { border-color: #2ea043; color: #2ea043; }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: left;
+        }
+        th { color: var(--text-title); font-weight: 500; }
+        td code { color: var(--text-title); }
+
+        /* Code Blocks */
+        pre {
+            background-color: var(--bg-code);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        code {
+            font-family: "Fira Code", Consolas, monospace;
+            font-size: 0.85rem;
+        }
+        p code, td code {
+            background-color: var(--bg-surface);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* --- Right Sidebar (On this page) --- */
+        .right-sidebar {
+            background-color: var(--bg-main);
+            position: fixed;
+            right: 0;
+            width: 240px;
+            height: 100vh;
+            padding: 40px 20px;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .right-sidebar-title {
+            color: var(--text-title);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .right-sidebar ul { list-style: none; }
+        .right-sidebar ul li { margin-bottom: 8px; }
+        .right-sidebar ul li a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+        .right-sidebar ul li a:hover { color: var(--text-title); }
+        .right-sidebar ul li.sub-link { margin-left: 15px; }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            body { grid-template-columns: 240px 1fr; }
+            .right-sidebar { display: none; }
+        }
+        @media (max-width: 768px) {
+            body { display: block; }
+            .left-sidebar { position: relative; width: 100%; height: auto; border-bottom: 1px solid var(--border-color); }
+            .main-content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="left-sidebar">
+        <div class="sidebar-title">Engine API</div>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#setup">Setup Guide</a></li>
+        </ul>
+        <br>
+        <div class="sidebar-title">Classes</div>
+        <ul>
+            <li><a href="#module-server" class="active">LDS Server</a></li>
+            <li><a href="#module-client">LDS Client</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <div class="breadcrumbs">
+            Modules <span>/</span> Server <span>/</span> LDS
+        </div>
+
+        <h1 id="overview">Lego Destruction System</h1>
+        
+        <div class="tag-container">
+            <span class="tag">Not Creatable</span>
+            <span class="tag">ModuleScript</span>
+        </div>
+
+        <p>LDS is a high-performance destruction engine for Roblox. It turns standard parts into voxel-based Lego craters upon impact.</p>
+        <p>The server handles the complex CSG math. The client handles all visual debris, particles, and sounds. This separation ensures zero server lag during explosions.</p>
+
+        <h2 id="setup">Setup & Installation</h2>
+        <p>Follow these steps to install the module in your place:</p>
+        <ol>
+            <li>Create a folder named <code>Breakable</code> inside <code>Workspace</code>. Put destructible parts here.</li>
+            <li>Place the Server Module inside <code>ReplicatedStorage</code>.</li>
+            <li>Place the Client Module inside <code>StarterPlayerScripts</code>.</li>
+            <li>Call <code>.Start()</code> on both modules from a Server Script and a Local Script.</li>
+        </ol>
+
+        <h2 id="properties">Properties (Attributes)</h2>
+        <p>Add these custom attributes to your parts to change how they break.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Value Type</th>
+                    <th>Summary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>Unbreakable</code></td>
+                    <td>boolean</td>
+                    <td>If true, the part ignores all impacts. Use this for map boundaries.</td>
+                </tr>
+                <tr>
+                    <td><code>Undividable</code></td>
+                    <td>boolean</td>
+                    <td>If true, the part shatters entirely into debris instantly instead of getting a crater.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 id="methods">Methods</h2>
+
+        <h3 id="start">Start</h3>
+        <div class="tag-container">
+            <span class="tag server">Server</span>
+            <span class="tag client">Client</span>
+        </div>
+        <p>Initializes the system. Creates required Folders and RemoteEvents automatically.</p>
+        <pre><code class="language-lua">local LDS = require(game.ReplicatedStorage.LDS)
+LDS.Start()</code></pre>
+
+        <h3 id="process-impact">ProcessImpact</h3>
+        <div class="tag-container">
+            <span class="tag server">Server</span>
+        </div>
+        <p>Triggers an explosion at a specific location. Use this for bombs, spells, or custom weapons.</p>
+        <pre><code class="language-lua">local LDS = require(game.ReplicatedStorage.LDS)
+
+-- Define explosion settings
+local params = {
+    ImpactRadius = 10,
+    HoleVoidRadius = 4,
+    ImpactForce = 100
+}
+
+-- Fire the explosion
+LDS.ProcessImpact(Vector3.new(0, 10, 0), params)</code></pre>
+
+        <h2 id="source-code">Source Code</h2>
+        
+        <h3 id="code-server">Server Module</h3>
+        <pre><code class="language-lua">-- Paste your Server Module code here
+local DestructionServer = {}
+-- ...
+return DestructionServer</code></pre>
+
+        <h3 id="code-client">Client Module</h3>
+        <pre><code class="language-lua">-- Paste your Client Module code here
+local DestructionClient = {}
+-- ...
+return DestructionClient</code></pre>
+
+    </main>
+
+    <aside class="right-sidebar">
+        <div class="right-sidebar-title">On this page</div>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#setup">Setup</a></li>
+            <li><a href="#properties">Properties</a></li>
+            <li><a href="#methods">Methods</a></li>
+            <li class="sub-link"><a href="#start">Start</a></li>
+            <li class="sub-link"><a href="#process-impact">ProcessImpact</a></li>
+            <li><a href="#source-code">Source Code</a></li>
+        </ul>
+    </aside>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/lua.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
