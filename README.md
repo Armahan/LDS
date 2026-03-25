@@ -1,4 +1,4 @@
-# 🧱 Lego Destruction System (LDS) for Roblox
+# Lego Destruction System (LDS) for Roblox
 
 **Created by Samtyy** *(Aka Armahan, Prymitif, Durkheim)*
 
@@ -6,7 +6,7 @@ The **Lego Destruction System (LDS)** is a highly optimized, voxel-based destruc
 
 ![LDS Preview](https://image.noelshack.com/fichiers/2026/12/1/1773686853-capture-d-cran-2026-03-16-194653.png)
 
-## ✨ Key Features
+## Key Features
 
 * **Voxel Grid Snapping:** Impacts don't just make messy holes; they carve out perfect 2x2x2 blocky craters for that classic "brick" aesthetic.
 * **Zero Server Lag:** A strict Server-Client architecture. The server calculates the math and CSG, while the client handles *all* physics, particles, and sounds.
@@ -14,13 +14,13 @@ The **Lego Destruction System (LDS)** is a highly optimized, voxel-based destruc
 * **Suction System:** Built-in client optimization where players naturally "vacuum" up nearby debris to keep the workspace clean.
 * **Anti-Freeze Protection:** The server automatically caps recursive cuts to prevent engine crashes during massive explosions.
 
-## 📖 Full Documentation
+## Full Documentation
 
 For the complete API reference, Client Configuration settings, and Part Attributes (like `Unbreakable` and `Undividable`), please visit the official documentation website:
 
 👉 **[Read the LDS Documentation Here](https://armahan.github.io/LDS/#overview)**
 
-## 🚀 Quick Setup
+## Quick Setup
 
 1. Create a `Folder` named **`Breakable`** inside your `Workspace`. Put any destructible parts inside it.
 2. Place the **LDS Server Module** inside `ReplicatedStorage.Assets.Modules.Server.LDS`.
